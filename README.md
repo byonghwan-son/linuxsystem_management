@@ -1,4 +1,4 @@
-참고 : 길벗 : 만화로 배우는 리눅스 시스템 관리 1
+### [참고 : 길벗 : 만화로 배우는 리눅스 시스템 관리 1](https://www.yes24.com/Product/Goods/30705473)
 ---
 # linuxsystem_management
 ## 명령어 History 검색
