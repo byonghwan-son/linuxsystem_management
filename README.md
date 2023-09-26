@@ -1,3 +1,5 @@
+길벗 : 만화로 배우는 리눅스 시스템 관리 1
+---
 # linuxsystem_management
 ## 명령어 History 검색
 * **역방 검색**
@@ -91,3 +93,73 @@ if [ $? != 0 ]: then exit: fi
   * HOSTNAME : 머신의 호스트명
 * 날짜 변형
   > echo $(date +%Y-%m-%d) -> 2023-09-25
+
+## 로그 파일에서 필요한 줄만 뽑고 싶어
+* cut 명령어 이용
+> cat access.log | grep -v 'jpg' | cut -d ' ' -f 7 | less
+* 명령어 설명
+  * grep : jpg 문자는 제외
+  * cut : 구분자(delimeter) 는 스페이스(' ') 이고 구분했을 때 7번째 값만 추출
+> cat access.log | grep -v 'jpg' | cut -d '[' -f 2 | cut -d ']' -f 1
+* 명령어 설명
+  * grep : jpg 문자는 제외
+  * cut : [] 사이에 있는 접속 시간을 추출
+> echo $PWD | cut -d "/" -f 2
+* 명령어 설명
+  * 현재 경로에서 root로 부터 1 번째 디렉토리 이름만 추출
+  * 1: / 2:var / 3:log / 4:apache2
+> cat access.log | grep -v 'jpg' | cut -d ' ' -f 7 | sort | uniq -c | sort -r | less
+* 명령어 설명
+  * 접속 경로를 정렬한 후에 중복을 제거한 다음 해당 행의 갯수를 표시한 결과에 다시 정렬을 해서 가장 접속을 많이 한 페이지부터 표시한다.
+> cat access.log | grep -v 'jpg' | cut -d ' ' -f 7 | sort | uniq -c | sort -r | less | tail -n 10
+* 명령어 설명
+  * 위의 설명에 마지막 10 줄만 표시
+> cat access.log | grep -v 'jpg' | cut -d ' ' -f 7 | sort | uniq -c | sort -r | less | head -n 10
+* 명령어 설명
+  * 위의 설명에 첫번째 10 줄만 표시
+
+## CSV 파일을 열의 내용에 따라 정렬하고 싶어
+* 주문 대비 출고 현황에서 단가가 비싼 순서대로 출력하기
+> cat 0914주문대비출고현황.csv | cut -d ',' -f 8-10,14,15 | sort -t ',' -k 4 -n -r -b >  output.csv
+* 명령어 설명
+  * cut : csv 파일을 컴마로 분리해서 8~10번째, 14번째, 15번째 행을 추출
+  * sort : cut으로 추출한 내용을 다시 컴마로 분리(-t ',')해서 4번째 행(-k 4)을 정렬에 사용한다
+  * sort는 문자열을 비교해서 정렬을 하기 때문에 정렬하고자 하는 행이 숫자인 경우는 -n 혹은 --number를 지정해서 숫자로 재해석 후 다시 정렬을 한다.
+  * 문자열의 시작에 스페이스가 들어가 있을 경우 빈문자열로 인해 원하는 정렬이 안된 경우 -b or --ignore-leading-blanks로 빈 문자열을 무시하게 한다.
+
+## 명령줄 지정으로 작업 내용을 바꾸고 싶어 (명령줄 인수)
+```bash
+#!/bin/bash
+echo $1 $2
+# 파일명은 echo_param.sh
+```
+* 실행 가능으로 변경
+> chmod +x echo_param.sh
+* 파라미터 적용하기
+> ./echo_param.sh file1 file2
+---
+**결과** : file1 file2
+
+* 옵션과 파라미터의 연결
+```bash
+#!/bin/bash
+
+while getopts b:n:p:o: OPT
+do
+  case $OPT in
+    b) base="$OPTARG" ;;
+    n) next="$OPTARG" ;;
+    p) previous="$OPTARG" ;;
+    o) output="$OPTARG" ;;
+  esac
+done
+
+echo base=$base next=$next previous=$previous output=$output
+# 파일명은 option.sh
+```
+> ./option.sh -b aaa -n bbb -p ccc -o ddd
+---
+**결과** : base=aaa next=bbb previous=ccc output=ddd
+
+## 조건에 따라 처리 흐름을 바꾸고 싶어 (조건 분기)
+
