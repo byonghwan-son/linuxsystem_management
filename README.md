@@ -162,4 +162,72 @@ echo base=$base next=$next previous=$previous output=$output
 **결과** : base=aaa next=bbb previous=ccc output=ddd
 
 ## 조건에 따라 처리 흐름을 바꾸고 싶어 (조건 분기)
+```bash
+#!/bin/bash
 
+if [ $# = 2 ]
+then
+  echo '인수가 2개'
+else
+  echo '인수가 2개가 아니야'
+fi
+
+```
+
+## 명령어 이상 종료에 대응하고 싶어(종료 상태)
+* ```$?```
+  * 0 : 명령 성공
+  * 그 외 : 명령 실패
+* ```$?```으로 직전에 실행한 명령어 종료 상태를 참조 가능
+* ```$?``` 값은 명령어가 정상 종료하면 0, 이상 종료하면 0 이외의 값이 됨
+* ```exit```에 인수로 숫자를 지정하면 셀 스크립트의 종료 상태가 됨
+* ```if```로 종료 상태를 참조하면 명령어가 정상 종료했는지에 따라 조건 분기가 가능
+
+※ 종료 상태는 0~255까지가 범위
+
+## 같은 처리를 반복해서 실행하고 싶어(for)
+```bash
+#!/bin/bash
+
+for filename in cd /var/log/apache2; ls *.log | grep -v 'error.log'
+do
+  ./create-report.sh $filename
+done
+
+```
+* /var/log/apache2 디렉터리에 있는 확장자가 log인 파일 가운데 [error.log]만 제외(-v)하고 모두 가져와서 하나씩 filename 변수에 담아서 실행한다.
+
+## 공통 처리를 계속 재사용하고 싶어(쉘 함수)
+```bash
+#!/bin/bash
+
+do_copy() {
+  cp /tmp/source $1
+}
+
+do_copy()
+
+# copy_files.sh
+```
+> ./copy_files.sh /tmp/target
+
+위와 같이 작성하면 오류가 발생한다.
+```
+cp: missing destination file operand after '/tmp/source'
+Try 'cp --help' for more information
+```
+$1이 스크립트의 파라미터 인지 함수의 파라미터 인지 애매하기 때문이다. \
+아래과 같이 작성을 해야 한다.
+```bash
+#!/bin/bash
+
+target=$1
+
+do_copy() {
+  cp /tmp/source $target
+}
+
+do_copy()
+
+# copy_files.sh
+```
