@@ -1,1 +1,1 @@
-### [만화로 배우는 리눅스 시스템 관리 1](만화로 배우는 리눅스 시스템 관리 1.md)
+### [만화로 배우는 리눅스 시스템 관리 1](https://github.com/byonghwan-son/linuxsystem_management/blob/main/%EB%A7%8C%ED%99%94%EB%A1%9C%20%EB%B0%B0%EC%9A%B0%EB%8A%94%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B4%80%EB%A6%AC%201.md)
