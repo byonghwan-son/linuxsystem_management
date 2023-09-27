@@ -6,6 +6,7 @@
   * ctrl + R을 눌러 검색할 이전 명령어를 입력
   * ctrl + R을 반복해서 누르면 입력한 명령어가 입력된 것만 추출해 줌.
 * **전방 검색**
+  * ctrl + S를 눌러서 검색할 다음 명령어를 입력 
   * vim ~/.bashrc
   * shift + G로 마지막 행으로 이동
   * stty stop undef
